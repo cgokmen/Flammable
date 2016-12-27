@@ -3,6 +3,7 @@ package com.cemgokmen;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,12 @@ public class ArrowHitListener implements Listener {
             if (block != null && block.getType() != Material.AIR) {
                 if (projectile.getFireTicks() > 0) {
                     Location location = projectile.getLocation();
-                    location.getBlock().setType(Material.FIRE);
+                    Block arrowLanded = location.getBlock();
+                    BlockFace burnFace = block.getFace(arrowLanded);
+                    Block target = block.getRelative(burnFace);
+                    if (target.getType() == Material.AIR) {
+                        target.setType(Material.FIRE);
+                    }
                 }
             }
         }
